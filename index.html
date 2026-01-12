@@ -7,117 +7,397 @@
 
   <style>
     :root{
-      --blue:#12a8e0; --black:#000; --green:#21b04a;
-      --muted:#6b6b6b; --shadow: rgba(0,0,0,.12);
+      --blue:#12a8e0;
+      --blue2:#0f91c5;
+      --green:#21b04a;
+      --green2:#17913a;
+
+      --bg:#f6fbff;
+      --card:#ffffff;
+      --line:#dcdcdc;
+      --text:#111;
+      --muted:#6b6b6b;
+
+      --shadow: 0 10px 26px rgba(0,0,0,.10);
+      --shadow2: 0 4px 0 rgba(0,0,0,.06);
+
+      --radius:12px;
     }
+
     *{ box-sizing:border-box; }
     body{
-      margin:0; font-family:Tahoma,Arial,sans-serif; color:#111; user-select:none;
-      background: radial-gradient(circle at 20% 10%, #fff 0%, #f7fbff 55%, #fff 100%);
+      margin:0;
+      font-family:Tahoma,Arial,sans-serif;
+      color:var(--text);
+      user-select:none;
+      background: radial-gradient(circle at 20% 10%, #fff 0%, var(--bg) 55%, #fff 100%);
     }
+
     .frame{
       width:980px; height:640px; margin:14px auto;
-      border:7px solid var(--blue); background:#fff;
-      box-shadow:0 10px 30px var(--shadow);
+      border:7px solid var(--blue);
+      background:#fff;
+      box-shadow: var(--shadow);
       position:relative; overflow:hidden;
+      border-radius: 14px;
     }
+
     .frame:before{
       content:""; position:absolute; inset:0; pointer-events:none;
       border-top:3px solid #c9f0ff; border-left:3px solid #c9f0ff;
       border-right:3px solid #007aa0; border-bottom:3px solid #007aa0;
-      opacity:.9;
+      opacity:.75;
+      border-radius: 10px;
     }
-    .inner{ padding:18px 22px; height:100%; display:flex; flex-direction:column; gap:10px; }
+
+    .inner{
+      padding:16px 18px;
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    /* Title + visible SEARCH (always) */
+    .topRow{
+      width:860px;
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+    }
+
     .title{
-      text-align:center; font-weight:bold; color:#d10000;
-      font-size:24px; letter-spacing:.5px; text-shadow:0 1px 0 #fff;
-      margin-top:2px;
+      font-weight:bold;
+      color:#d10000;
+      font-size:24px;
+      letter-spacing:.5px;
+      text-shadow:0 1px 0 #fff;
+      white-space:nowrap;
     }
 
-    .searchRow{
-      width:860px; margin:0 auto; height:56px;
-      border:5px solid #000; background:#fff;
-      display:flex; overflow:hidden; box-shadow:0 4px 0 rgba(0,0,0,.06);
-    }
-    .searchRow input{ flex:1; border:0; outline:none; font-size:18px; padding:0 18px;
-      background:linear-gradient(#fff,#fafafa);
-    }
-    .searchRow button{
-      width:190px; border:0; border-left:5px solid #000;
-      font-weight:bold; font-size:18px;
-      background:linear-gradient(#f7f7f7,#eaeaea); cursor:pointer;
+    .searchBar{
+      flex:1;
+      display:flex;
+      align-items:center;
+      gap:10px;
     }
 
-    .section{ width:860px; margin:0 auto; display:flex; flex-direction:column; gap:8px; }
-    .head{ display:flex; align-items:center; justify-content:space-between; font-weight:bold; padding:0 2px; }
-    .head .label{ font-size:20px; letter-spacing:.3px; }
+    .searchWrap{
+      flex:1;
+      height:44px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      border:4px solid #000;
+      border-radius:14px;
+      background:#fff;
+      box-shadow: var(--shadow2);
+      padding:0 12px;
+      min-width: 380px;
+    }
+
+    .searchIcon{ font-size:16px; opacity:.85; }
+
+    .searchWrap input{
+      flex:1;
+      border:0;
+      outline:none;
+      font-size:16px;
+      background:transparent;
+    }
+
+    .clearBtn{
+      border:2px solid #000;
+      background:#fff;
+      width:32px; height:32px;
+      border-radius:10px;
+      cursor:pointer;
+      box-shadow:0 2px 0 rgba(0,0,0,.06);
+      font-weight:bold;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      opacity:.85;
+    }
+    .clearBtn:hover{ opacity:1; transform: translateY(-1px); }
+    .clearBtn:active{ transform: translateY(0px); }
+
+    .searchBtn{
+      height:44px;
+      border:4px solid #000;
+      border-radius:14px;
+      padding:0 18px;
+      background:linear-gradient(#12a8e0,#0f91c5);
+      color:#fff;
+      font-weight:bold;
+      cursor:pointer;
+      box-shadow: var(--shadow2);
+      white-space:nowrap;
+    }
+    .searchBtn:hover{ filter: brightness(1.06); }
+    .searchBtn:active{ transform: translateY(1px); box-shadow:0 2px 0 rgba(0,0,0,.06); }
+
+    /* Sections */
+    .section{
+      width:860px;
+      margin:0 auto;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      font-weight:bold;
+      padding:0 4px;
+    }
+    .head .label{ font-size:18px; letter-spacing:.3px; }
+
     .right{ display:flex; align-items:center; gap:10px; }
-    .tag{ border:2px solid #000; padding:2px 10px; font-size:12px; background:#fff; box-shadow:0 2px 0 rgba(0,0,0,.06); }
+    .tag{
+      border:2px solid #000;
+      padding:2px 10px;
+      font-size:12px;
+      background:#fff;
+      box-shadow:0 2px 0 rgba(0,0,0,.06);
+      border-radius: 999px;
+    }
 
-    .continueRow{ display:flex; gap:12px; flex-wrap:wrap; align-items:flex-start; }
+    /* Continue tiles */
+    .continueRow{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:flex-start;
+    }
+
     .emptyBox{
-      border:3px dashed #bcbcbc; background:#f9f9f9;
-      padding:12px; font-weight:bold; color:#555; text-align:center;
+      border:3px dashed #bcbcbc;
+      background:#f9f9f9;
+      padding:12px;
+      font-weight:bold;
+      color:#555;
+      text-align:center;
+      border-radius: var(--radius);
     }
 
     .tile{
-      width:132px; background:#fff; border:2px solid #bdbdbd;
-      box-shadow:0 3px 0 rgba(0,0,0,.06); overflow:hidden;
+      width:146px;
+      background:var(--card);
+      border:1px solid var(--line);
+      box-shadow: 0 6px 16px rgba(0,0,0,.08);
+      overflow:hidden;
+      border-radius: var(--radius);
+      transition: transform .12s ease, box-shadow .12s ease;
     }
-    .tile .thumb{ width:100%; height:92px; background:#f1f1f1; border-bottom:2px solid #d3d3d3; overflow:hidden; }
-    .tile .thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .tile .name{ padding:7px 8px 2px 8px; font-size:12px; font-weight:bold; height:34px; overflow:hidden; }
-    .tile .date{ padding:0 8px 6px 8px; font-size:11px; color:var(--muted); font-weight:bold; height:16px; overflow:hidden; }
-    .tile button{
-      width:100%; border:0; background:linear-gradient(#27bf55,#1aa241);
-      color:#fff; font-weight:bold; padding:9px 0; cursor:pointer; font-size:14px;
+    .tile:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(0,0,0,.12);
     }
 
+    .tile .thumb{
+      width:100%; height:96px;
+      background:#f1f1f1;
+      border-bottom:1px solid var(--line);
+      overflow:hidden;
+    }
+    .tile .thumb img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .tile .name{
+      padding:8px 10px 2px 10px;
+      font-size:12px;
+      font-weight:bold;
+      height:34px;
+      overflow:hidden;
+    }
+    .tile .date{
+      padding:0 10px 8px 10px;
+      font-size:11px;
+      color:var(--muted);
+      font-weight:bold;
+      height:16px;
+      overflow:hidden;
+    }
+    .tile button{
+      width:100%;
+      border:0;
+      background:linear-gradient(#27bf55,#1aa241);
+      color:#fff;
+      font-weight:bold;
+      padding:10px 0;
+      cursor:pointer;
+      font-size:14px;
+    }
+    .tile button:hover{ background:linear-gradient(#2fe163,#1db14a); }
+
+    /* List */
     .listBox{
-      width:860px; height:280px; border:5px solid #000; background:#fff;
-      overflow:auto; box-shadow:0 6px 0 rgba(0,0,0,.05);
+      width:860px;
+      height:334px;
+      border:4px solid #000;
+      background:#fff;
+      overflow:auto;
+      box-shadow: 0 4px 0 rgba(0,0,0,.06);
+      border-radius: 14px;
     }
+
     .gameRow{
-      display:flex; align-items:center; gap:14px;
-      padding:10px 12px; border-bottom:1px solid #e8e8e8;
-      min-height:74px; overflow:hidden;
+      display:flex;
+      align-items:center;
+      gap:14px;
+      padding:10px 12px;
+      border-bottom:1px solid #ededed;
+      min-height:78px;
+      transition: background .12s ease;
     }
-    .gThumb{ width:62px; height:62px; border:2px solid #d5d5d5; background:#f1f1f1; overflow:hidden; flex:0 0 auto; }
-    .gThumb img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .gMain{ width:410px; min-width:410px; overflow:hidden; }
+    .gameRow:hover{ background:#f7fcff; }
+    .gameRow:last-child{ border-bottom:0; }
+
+    .gThumb{
+      width:62px; height:62px;
+      border:1px solid var(--line);
+      background:#f1f1f1;
+      overflow:hidden;
+      flex:0 0 auto;
+      border-radius: 12px;
+    }
+    .gThumb img{
+      width:100%; height:100%;
+      object-fit:cover; display:block;
+    }
+
+    .gMain{
+      width:420px; min-width:420px;
+      overflow:hidden;
+    }
     .gName{
-      font-weight:bold; font-size:16px; line-height:18px;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      font-weight:bold;
+      font-size:16px;
+      line-height:18px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
       margin-bottom:6px;
     }
-    .metaLine{ display:flex; flex-wrap:wrap; gap:18px; font-weight:bold; font-size:13px; color:#111; }
-    .metaLine span{ min-width:108px; white-space:nowrap; display:inline-block; }
-    .datePill{
-      border:2px solid #000; padding:2px 8px; background:#fff; font-size:12px;
-      box-shadow:0 2px 0 rgba(0,0,0,.06); white-space:nowrap; flex:0 0 auto;
+
+    .metaLine{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      font-weight:bold;
+      font-size:13px;
+      color:#111;
     }
-    .playBtn{
-      margin-left:auto; width:240px; height:50px; border:0;
-      background:linear-gradient(#27bf55,#1aa241); color:#fff;
-      font-weight:bold; font-size:20px; cursor:pointer; flex:0 0 auto;
+    .metaLine .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:2px 10px;
+      border-radius: 999px;
+      border:1px solid #e0e0e0;
+      background:#fff;
+      color:#111;
+      box-shadow: 0 2px 0 rgba(0,0,0,.04);
+      min-width: 132px;
+      white-space:nowrap;
+    }
+    .metaLine .pill .dim{ color:var(--muted); }
+
+    .datePill{
+      border:2px solid #000;
+      padding:2px 10px;
+      background:#fff;
+      font-size:12px;
+      box-shadow:0 2px 0 rgba(0,0,0,.06);
+      white-space:nowrap;
+      flex:0 0 auto;
+      border-radius: 999px;
     }
 
+    .actions{
+      margin-left:auto;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      width:240px;
+      flex:0 0 auto;
+    }
+
+    .openBtn{
+      border:0;
+      height:34px;
+      cursor:pointer;
+      font-weight:bold;
+      color:#fff;
+      background:linear-gradient(var(--blue), var(--blue2));
+      border-radius: 12px;
+    }
+    .openBtn:hover{ filter: brightness(1.06); }
+
+    .playBtn{
+      border:0;
+      height:44px;
+      cursor:pointer;
+      font-weight:bold;
+      color:#fff;
+      background:linear-gradient(#27bf55,#1aa241);
+      border-radius: 12px;
+      font-size:18px;
+    }
+    .playBtn:hover{ background:linear-gradient(#2fe163,#1db14a); }
+
+    /* Seg buttons */
     .seg{ display:flex; gap:6px; }
     .segBtn{
-      border:2px solid #000; background:#fff; padding:4px 12px;
-      cursor:pointer; font-weight:bold; font-size:14px; min-width:44px;
+      border:2px solid #000;
+      background:#fff;
+      padding:4px 12px;
+      cursor:pointer;
+      font-weight:bold;
+      font-size:14px;
+      min-width:44px;
       box-shadow:0 2px 0 rgba(0,0,0,.06);
+      border-radius: 10px;
     }
     .segBtn.active{ background:#000; color:#fff; }
-    .loading{ padding:16px; text-align:center; font-weight:bold; }
+
+    .loading{ padding:16px; text-align:center; font-weight:bold; color:#333; }
 
     .status{
-      width:860px; margin:0 auto; display:flex; align-items:center; justify-content:space-between;
-      font-size:12px; color:var(--muted); padding-top:2px;
+      width:860px;
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      font-size:12px;
+      color:var(--muted);
+      padding-top:2px;
     }
     .btn{
-      border:2px solid #000; padding:5px 14px; background:#fff;
-      cursor:pointer; font-weight:bold; box-shadow:0 2px 0 rgba(0,0,0,.06);
+      border:2px solid #000;
+      padding:6px 14px;
+      background:#fff;
+      cursor:pointer;
+      font-weight:bold;
+      box-shadow:0 2px 0 rgba(0,0,0,.06);
+      border-radius: 10px;
+    }
+    .btn:hover{ transform: translateY(-1px); }
+    .btn:active{ transform: translateY(0px); }
+
+    mark{
+      background:#fff2a8;
+      padding:0 2px;
+      border-radius: 6px;
     }
   </style>
 </head>
@@ -125,17 +405,27 @@
 <body>
   <div class="frame">
     <div class="inner">
-      <div class="title">RockBlox 2018</div>
 
-      <div class="searchRow">
-        <input id="searchInput" type="text" value="Search..." />
-        <button id="enterBtn">ENTER</button>
+      <!-- TOP: Title + ALWAYS VISIBLE SEARCH -->
+      <div class="topRow">
+        <div class="title">RockBlox 2018</div>
+
+        <div class="searchBar">
+          <div class="searchWrap">
+            <div class="searchIcon">🔎</div>
+            <input id="searchInput" type="text" placeholder="Search games..." autocomplete="off" />
+            <button id="clearBtn" class="clearBtn" title="Wyczyść">✕</button>
+          </div>
+          <button id="searchBtn" class="searchBtn">SEARCH</button>
+        </div>
       </div>
 
       <div class="section">
         <div class="head">
           <div class="label">CONTINUE:</div>
-          <div class="right"><div class="tag">Local</div></div>
+          <div class="right">
+            <div class="tag">Local</div>
+          </div>
         </div>
 
         <div id="continueRow" class="continueRow"></div>
@@ -146,9 +436,9 @@
 
       <div class="section">
         <div class="head">
-          <div class="label">GAME:</div>
+          <div class="label">GAMES:</div>
           <div class="right">
-            <span style="font-size:12px;color:#444;font-weight:bold;">Ładowanie:</span>
+            <span style="font-size:12px;color:#444;font-weight:bold;">Page:</span>
             <div class="seg">
               <button id="ps5" class="segBtn">5</button>
               <button id="ps10" class="segBtn">10</button>
@@ -168,16 +458,25 @@
   </div>
 
 <script>
-/* ====== STARY SYSTEM: GitHub RAW ======
-   To działa nawet na file:// (z dysku), bo czyta z internetu.
-*/
+/* =============================
+   RockBlox 2018 (Search FIXED)
+   - Search is ALWAYS visible (top right)
+   - live filtering while typing
+   - click SEARCH or press Enter
+   - clear X
+   - Continue (recent)
+   - lazy load
+   - Open page + Play
+   - optional stats fallback
+============================= */
+
 const GAMES_URL = "https://raw.githubusercontent.com/olas2012z/RockBlox2018/main/games.json";
 
-const CONTINUE_LIMIT = 4;
-const MIN_LOADING_MS = 450;
+const ENABLE_STATS = true;
+const PROXY_PREFIX = ""; // opcjonalnie
 
-// jak chcesz debug w statusie (scrollHeight itp.) to ustaw na true
-const DEBUG_SCROLL = false;
+const CONTINUE_LIMIT = 4;
+const MIN_LOADING_MS = 220;
 
 const LS_RECENT = "rb2018_recent";
 const LS_LASTSEARCH = "rb2018_lastsearch";
@@ -197,7 +496,10 @@ function setStatus(left, right){
 }
 function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
 function safeText(x, fallback=""){ return (x===null||x===undefined) ? fallback : String(x); }
-function prettyDate(d){ const s=(d||"").toString().trim(); if(!s) return ""; return s; }
+function prettyDate(d){ const s=(d||"").toString().trim(); return s || ""; }
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+}
 
 /* ===== CONTINUE ===== */
 function readRecent(){
@@ -205,6 +507,7 @@ function readRecent(){
   catch{ return []; }
 }
 function writeRecent(arr){ localStorage.setItem(LS_RECENT, JSON.stringify(arr)); }
+
 function addToRecent(game){
   let rec = readRecent();
   rec = rec.filter(x => String(x.gameId) !== String(game.gameId));
@@ -212,6 +515,7 @@ function addToRecent(game){
     gameId:String(game.gameId),
     name:game.name||"Nazwa",
     placeId:String(game.placeId),
+    universeId: game.universeId ? String(game.universeId) : "",
     iconUrl:game.iconUrl||"",
     date:game.date||""
   });
@@ -219,6 +523,7 @@ function addToRecent(game){
   writeRecent(rec);
   renderContinue();
 }
+
 function renderContinue(){
   const row = $("continueRow");
   const empty = $("continueEmpty");
@@ -229,25 +534,34 @@ function renderContinue(){
   empty.style.display="none";
   rec.slice(0, CONTINUE_LIMIT).forEach(item => row.appendChild(makeTile(item)));
 }
+
 function makeTile(item){
   const d = document.createElement("div"); d.className="tile";
   const th = document.createElement("div"); th.className="thumb";
   if(item.iconUrl){
     const img=document.createElement("img"); img.src=item.iconUrl; img.alt="";
-    img.onerror=()=>{ th.innerHTML=""; }; th.appendChild(img);
+    img.onerror=()=>{ th.innerHTML=""; };
+    th.appendChild(img);
   }
   d.appendChild(th);
+
   const nm=document.createElement("div"); nm.className="name"; nm.textContent=item.name||"Nazwa"; d.appendChild(nm);
   const dt=document.createElement("div"); dt.className="date"; dt.textContent=prettyDate(item.date); d.appendChild(dt);
+
   const btn=document.createElement("button"); btn.textContent="Play"; btn.onclick=()=>playGame(item); d.appendChild(btn);
   return d;
 }
 
-/* ===== PLAY ===== */
+/* ===== PLAY + PAGE ===== */
 function playGame(game){
   const full = allGames.find(g => String(g.gameId)===String(game.gameId)) || game;
   addToRecent(full);
   window.location.href = `roblox://placeId=${encodeURIComponent(full.placeId)}`;
+}
+
+function openPage(game){
+  const url = `https://www.roblox.com/games/${encodeURIComponent(game.placeId)}`;
+  window.open(url, "_blank");
 }
 
 /* ===== PAGE SIZE ===== */
@@ -277,8 +591,10 @@ async function loadGames(){
       gameId: safeText(x.gameId),
       name: safeText(x.name, "Nazwa"),
       placeId: safeText(x.placeId),
+      universeId: safeText(x.universeId, ""),
       iconUrl: safeText(x.iconUrl, ""),
-      date: safeText(x.date, "")
+      date: safeText(x.date, ""),
+      description: safeText(x.description, "")
     }));
 
   const savedPS = parseInt(localStorage.getItem(LS_PAGESIZE) || "5", 10);
@@ -286,28 +602,44 @@ async function loadGames(){
   setPageSizeUI(pageSize);
 
   const last = (localStorage.getItem(LS_LASTSEARCH) || "").trim();
-  $("searchInput").value = last ? last : "Search...";
+  $("searchInput").value = last;
 
-  applySearch(last);
+  applySearch(last, false);
   clearList();
 
   await renderNextPage();
-  await fillIfNoScroll(); // <-- KLUCZ: dociąga, jeśli nie ma scrolla
+  await fillIfNoScroll();
 
   renderContinue();
+  setStatus(`Wczytano: ${allGames.length} gier`, "Ready");
 }
 
-function clearList(){ $("listBox").innerHTML=""; renderedCount=0; }
+function clearList(){
+  $("listBox").innerHTML="";
+  renderedCount=0;
+}
 
-/* ===== SEARCH ===== */
-function applySearch(qRaw){
+/* ===== SEARCH (live + button) ===== */
+function applySearch(qRaw, render=true){
   const q = (qRaw || "").trim().toLowerCase();
   localStorage.setItem(LS_LASTSEARCH, qRaw || "");
-  if(!q || q==="search...") filteredGames = allGames.slice();
-  else filteredGames = allGames.filter(g => (g.name||"").toLowerCase().includes(q));
+
+  if(!q){
+    filteredGames = allGames.slice();
+  } else {
+    filteredGames = allGames.filter(g => {
+      const n = (g.name||"").toLowerCase();
+      const d = (g.description||"").toLowerCase();
+      return n.includes(q) || d.includes(q);
+    });
+  }
 
   clearList();
-  setStatus(`Wyniki: ${filteredGames.length}`, "Tryb: RAW");
+  setStatus(`Wyniki: ${filteredGames.length}`, "Scroll ładuje kolejne");
+
+  if(render){
+    renderNextPage().then(()=>fillIfNoScroll());
+  }
 }
 
 /* ===== LAZY LOAD ===== */
@@ -329,69 +661,110 @@ async function renderNextPage(){
     const elapsed = Date.now() - start;
     if(elapsed < MIN_LOADING_MS) await sleep(MIN_LOADING_MS - elapsed);
 
-    // jeśli user kliknął refresh/szukaj i lista się zmieniła, a div już zniknął
     if(loadingDiv.parentNode) box.removeChild(loadingDiv);
 
     for(const g of slice) box.appendChild(makeGameRow(g));
 
     renderedCount += slice.length;
 
-    const dbg = DEBUG_SCROLL ? debugScrollText() : "";
     setStatus(
       `Gry: ${filteredGames.length} | Pokazano: ${renderedCount} | Strona: ${pageSize}`,
-      dbg || "Scroll ładuje kolejne"
+      ENABLE_STATS ? "Stats: auto (jeśli CORS pozwoli)" : "Stats: off"
     );
+
+    if(ENABLE_STATS){
+      slice.forEach(g => fetchAndFillStats(g).catch(()=>{}));
+    }
   } finally {
     loading = false;
   }
 }
 
 function makeGameRow(g){
-  const row=document.createElement("div"); row.className="gameRow";
+  const row=document.createElement("div");
+  row.className="gameRow";
+  row.dataset.gameId = g.gameId;
 
   const th=document.createElement("div"); th.className="gThumb";
   if(g.iconUrl){
     const img=document.createElement("img"); img.src=g.iconUrl; img.alt="";
-    img.onerror=()=>{ th.innerHTML=""; }; th.appendChild(img);
+    img.onerror=()=>{ th.innerHTML=""; };
+    th.appendChild(img);
   }
   row.appendChild(th);
 
   const main=document.createElement("div"); main.className="gMain";
-  const nm=document.createElement("div"); nm.className="gName"; nm.textContent=g.name||"Nazwa"; main.appendChild(nm);
+
+  const q = ($("searchInput").value || "").trim();
+  const nameHtml = highlightText(g.name||"Nazwa", q);
+  const desc = g.description ? highlightText(g.description, q) : "";
+
+  const nm=document.createElement("div"); nm.className="gName"; nm.innerHTML = nameHtml;
+  main.appendChild(nm);
 
   const meta=document.createElement("div"); meta.className="metaLine";
-  meta.innerHTML=`<span>Visit: —</span><span>Like: —</span><span>Online: —</span>`;
+  meta.innerHTML = `
+    <span class="pill">👁 <span class="dim">Visit:</span> <b data-stat="visits">—</b></span>
+    <span class="pill">👍 <span class="dim">Like:</span> <b data-stat="likes">—</b></span>
+    <span class="pill">🟢 <span class="dim">Online:</span> <b data-stat="online">—</b></span>
+  `;
   main.appendChild(meta);
+
+  if(desc){
+    const small=document.createElement("div");
+    small.style.cssText="margin-top:6px;font-size:12px;color:#444;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;";
+    small.innerHTML = desc;
+    main.appendChild(small);
+  }
 
   row.appendChild(main);
 
-  const date=document.createElement("div"); date.className="datePill"; date.textContent=prettyDate(g.date)||"—";
+  const date=document.createElement("div"); date.className="datePill";
+  date.textContent = prettyDate(g.date) || "—";
   row.appendChild(date);
 
-  const btn=document.createElement("button"); btn.className="playBtn"; btn.textContent="Play"; btn.onclick=()=>playGame(g);
-  row.appendChild(btn);
+  const actions = document.createElement("div"); actions.className="actions";
+
+  const open=document.createElement("button");
+  open.className="openBtn";
+  open.textContent="Open page";
+  open.onclick=()=>openPage(g);
+
+  const btn=document.createElement("button");
+  btn.className="playBtn";
+  btn.textContent="Play";
+  btn.onclick=()=>playGame(g);
+
+  actions.appendChild(open);
+  actions.appendChild(btn);
+  row.appendChild(actions);
+
+  row.addEventListener("click",(e)=>{
+    const t = e.target;
+    if(t && (t.tagName==="BUTTON" || t.closest("button"))) return;
+    playGame(g);
+  });
 
   return row;
 }
 
-/* ===== FIX: Load more even when list is too short ===== */
-function debugScrollText(){
-  const box = $("listBox");
-  return `scrollTop:${Math.round(box.scrollTop)} sh:${box.scrollHeight} ch:${box.clientHeight}`;
+function highlightText(text, q){
+  const s = safeText(text,"");
+  const qq = (q||"").trim();
+  if(!qq) return escapeHtml(s);
+  const i = s.toLowerCase().indexOf(qq.toLowerCase());
+  if(i<0) return escapeHtml(s);
+  const a = escapeHtml(s.slice(0,i));
+  const b = escapeHtml(s.slice(i,i+qq.length));
+  const c = escapeHtml(s.slice(i+qq.length));
+  return `${a}<mark>${b}</mark>${c}`;
 }
 
+/* ===== SCROLL LOAD ===== */
 function maybeLoadMore(){
   const box = $("listBox");
-
   const noScrollYet = box.scrollHeight <= box.clientHeight + 2;
   const nearBottom  = box.scrollTop + box.clientHeight >= box.scrollHeight - 120;
-
-  if(DEBUG_SCROLL){
-    setStatus(
-      `Gry: ${filteredGames.length} | Pokazano: ${renderedCount} | Strona: ${pageSize}`,
-      debugScrollText()
-    );
-  }
 
   if(noScrollYet || nearBottom){
     renderNextPage().then(()=>fillIfNoScroll());
@@ -400,8 +773,6 @@ function maybeLoadMore(){
 
 async function fillIfNoScroll(){
   const box = $("listBox");
-
-  // do 6 prób – wystarczy nawet na małe listy, a nie zapętli się
   for(let i=0; i<6; i++){
     const noScrollYet = box.scrollHeight <= box.clientHeight + 2;
     const canLoadMore = renderedCount < filteredGames.length;
@@ -409,25 +780,91 @@ async function fillIfNoScroll(){
     if(noScrollYet && canLoadMore){
       await renderNextPage();
       await sleep(40);
-    } else {
-      break;
-    }
+    } else break;
   }
+}
+
+/* ===== STATS (optional) ===== */
+function apiFetch(url){
+  const finalUrl = PROXY_PREFIX ? (PROXY_PREFIX + encodeURIComponent(url)) : url;
+  return fetch(finalUrl, { cache:"no-store" });
+}
+
+async function fetchAndFillStats(game){
+  const row = document.querySelector(`.gameRow[data-game-id="${CSS.escape(game.gameId)}"]`);
+  if(!row) return;
+
+  const visitsEl = row.querySelector('[data-stat="visits"]');
+  const likesEl  = row.querySelector('[data-stat="likes"]');
+  const onlineEl = row.querySelector('[data-stat="online"]');
+
+  if(onlineEl && onlineEl.dataset.done==="1") return;
+
+  const universeId = (game.universeId || "").trim();
+  const idForApi = universeId || (game.placeId || "").trim();
+  if(!idForApi) return;
+
+  const api = `https://games.roblox.com/v1/games?universeIds=${encodeURIComponent(idForApi)}`;
+
+  try{
+    const r = await apiFetch(api);
+    if(!r.ok) return;
+    const j = await r.json();
+    const item = j && j.data && j.data[0];
+    if(!item) return;
+
+    const playing = item.playing;
+    const visits  = item.visits;
+    const likePct = (item.likePercentage != null) ? (item.likePercentage + "%") : null;
+
+    if(visitsEl) visitsEl.textContent = (visits != null) ? formatNum(visits) : "—";
+    if(onlineEl) onlineEl.textContent = (playing != null) ? formatNum(playing) : "—";
+    if(likesEl)  likesEl.textContent  = likePct || "—";
+
+    if(onlineEl) onlineEl.dataset.done="1";
+  }catch(e){
+    // CORS/Network -> zostaw —
+  }
+}
+
+function formatNum(n){
+  const x = Number(n);
+  if(!isFinite(x)) return "—";
+  return x.toLocaleString("pl-PL");
 }
 
 /* ===== EVENTS ===== */
 function initEvents(){
-  const inp=$("searchInput");
-  inp.addEventListener("focus",()=>{ if(inp.value==="Search...") inp.value=""; });
-  inp.addEventListener("blur",()=>{ if(!inp.value.trim()) inp.value="Search..."; });
+  const inp = $("searchInput");
+  const clear = $("clearBtn");
 
-  $("enterBtn").onclick=()=>{
-    const q=(inp.value==="Search...")?"":inp.value;
-    applySearch(q);
-    renderNextPage().then(()=>fillIfNoScroll());
+  let tmr = null;
+
+  inp.addEventListener("input", ()=>{
+    clear.style.opacity = inp.value.trim() ? "1" : ".7";
+    if(tmr) clearTimeout(tmr);
+    tmr = setTimeout(()=>applySearch(inp.value, true), 120);
+  });
+
+  inp.addEventListener("keydown",(e)=>{
+    if(e.key === "Enter"){
+      applySearch(inp.value, true);
+    }
+  });
+
+  $("searchBtn").onclick=()=>{
+    applySearch(inp.value, true);
   };
 
-  $("refreshBtn").onclick=async ()=>{ await loadGames(); };
+  clear.addEventListener("click", ()=>{
+    inp.value = "";
+    inp.focus();
+    applySearch("", true);
+  });
+
+  $("refreshBtn").onclick=async ()=>{
+    await loadGames();
+  };
 
   $("ps5").onclick=()=>setPageSize(5);
   $("ps10").onclick=()=>setPageSize(10);
@@ -453,5 +890,3 @@ function initEvents(){
 </script>
 </body>
 </html>
-
-
