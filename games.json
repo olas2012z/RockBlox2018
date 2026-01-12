@@ -3,7 +3,7 @@
     "gameId": "zvh_01",
     "name": "[CLASSIC] Be Crushed By A Speeding Wall",
     "placeId": 909979046,
-    "universeId": "909979046",
+    "universeId": 379019188
     "iconUrl": "https://raw.githubusercontent.com/olas2012z/RockBlox2018/main/icons/WallingCrash.png",
     "date": "2018-06-12"
   },
@@ -85,6 +85,7 @@
     "date": "2009-07-30"
   }
 ]
+
 
 
 
